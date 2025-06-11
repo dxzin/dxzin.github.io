@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Para o Amor da Minha Vida</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        @keyframes pulsate {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #btnTeAmo {
+            background: linear-gradient(to right, #e91e63, #9c27b0);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            font-size: 2.5em;
+            border-radius: 70px;
+            cursor: pointer;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: pulsate 2s infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #btnTeAmo::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(20px);
+            transform: translateX(calc(-100% - 40px));
+            transition: transform 0.4s ease-in-out;
+        }
+
+        #btnTeAmo:hover::before {
+            transform: translateX(calc(100% + 250px));
+        }
+
+        #btnTeAmo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        #pagina-secreta {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+            max-width: 900px;
+            padding-bottom: 70px;
+        }
+
+        #spotify-player {
+            width: 350px;
+            height: 90px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #carrossel {
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            margin: 30px auto;
+            border-radius: 25px;
+            background-color: #f0f2f5;
+            padding: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .foto {
+            width: 100%;
+            aspect-ratio: 9 / 15.5;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .seta {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5em;
+            color: #e91e63;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            z-index: 10;
+        }
+        .seta:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #d81b60;
+            transform: translateY(-50%) scale(1.1);
+        }
+        #seta-esquerda { left: 22px; }
+        #seta-direita { right: 22px; }
+
+
+        #contador-amor, #nossa-historia {
+            background: rgba(255, 255, 255, 0.2);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            backdrop-filter: blur(12px) saturate(160%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            text-align: center;
+        }
+
+        #contador-amor {
+            margin: 30px 0;
+            padding: 25px 30px;
+            max-width: 500px;
+        }
+
+        #contador-amor h2 {
+            color: #6a1b9a;
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-bottom: 15px; /* Aumentado para dar espaço à nova linha */
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        #tempo-amor {
+            color: #ad1457; /* Cor principal para YMD */
+            font-family: 'Dancing Script', cursive;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            line-height: 1.4; /* Ajustado para acomodar duas linhas */
+        }
+        #tempo-amor .ymd-line {
+            font-size: 2em; /* Tamanho para Anos, Meses, Dias */
+            display: block; /* Faz com que o YMD fique na primeira linha */
+        }
+        #tempo-amor .hms-line {
+            font-size: 1.6em; /* Tamanho um pouco menor para H:M:S */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais padrão para relógio */
+            color: #6a1b9a; /* Cor dos H:M:S, pode ser a mesma do título */
+            display: block; /* Faz com que o H:M:S fique na segunda linha */
+            margin-top: 8px; /* Espaço entre as linhas */
+        }
+        #tempo-amor .unit-label { /* Para "anos", "meses", "dias" */
+            font-size: 0.5em; /* Relativo ao tamanho do pai (.ymd-line ou .hms-line) */
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-weight: normal;
+            margin-left: 2px;
+            margin-right: 5px;
+        }
+        #tempo-amor .hms-colon { /* Para os dois-pontos em H:M:S */
+            font-size: 0.9em; /* Relativo ao .hms-line */
+            margin: 0 1px;
+        }
+
+
+        #nossa-historia {
+            margin-top: 30px;
+            padding: 30px 25px;
+            max-width: 650px;
+        }
+
+        #nossa-historia h3 {
+            color: #6a1b9a;
+            font-size: 2em;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .texto-rolavel {
+            max-height: 260px;
+            overflow-y: auto;
+            padding: 10px 15px;
+            margin: 0;
+            border: none;
+            background: transparent;
+            scroll-behavior: smooth;
+            text-align: justify;
+            line-height: 1.75;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .texto-rolavel::-webkit-scrollbar { width: 8px; }
+        .texto-rolavel::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .texto-rolavel::-webkit-scrollbar-thumb { background: rgba(233, 30, 99, 0.5); border-radius: 10px; }
+        .texto-rolavel::-webkit-scrollbar-thumb:hover { background: rgba(216, 27, 96, 0.7); }
+
+        .texto-rolavel hr {
+            border: 0;
+            border-top: 1px dashed rgba(0, 0, 0, 0.15);
+            margin: 25px 0;
+        }
+        .texto-rolavel p:last-of-type {
+            color: #ad1457;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.35em;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 15px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        #rolar-btn {
+            background: rgba(255, 255, 255, 0.25);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            color: #c2185b;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 12px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: block;
+            margin: 25px auto 0;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95em;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+        #rolar-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+            color: #ad1457;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.8em;
+            color: #e91e63;
+            animation: float 4s ease-in-out infinite, twinkle 1s infinite alternate;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0;
+            animation-delay: var(--delay);
+            animation-fill-mode: forwards;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="pagina-inicial">
+        <button id="btnTeAmo">TE AMO ❤️</button>
+    </div>
+
+    <div id="pagina-secreta">
+        <div id="spotify-player">
+            <iframe src="https://open.spotify.com/embed/track/7FlHNJT4TC120CDvFOHzei" width="100%"
+                    height="90"
+                    frameborder="0"
+                    allowtransparency="true"
+                    allow="encrypted-media">
+            </iframe>
+        </div>
+
+        <div id="carrossel">
+            <div class="seta" id="seta-esquerda">❮</div>
+            <img class="foto" id="foto-atual" src="" alt="Foto do casal">
+            <div class="seta" id="seta-direita">❯</div>
+        </div>
+
+        <div id="contador-amor">
+            <h2>Eu te amo há:</h2>
+            <p id="tempo-amor">Carregando...</p>
+        </div>
+
+        <div id="nossa-historia">
+            <h3>Nossa Doce História</h3>
+            <div class="texto-rolavel">
+                <p>O jeito que me apaixonei pela minha melhor amiga foi um processo lento e repleto de altos e baixos, mas inevitável. No começo da nossa amizade, a gente batia um pouco de frente, era um misto de cumplicidade e alguns desafios. Depois que ficamos juntos, houve um período em que nos afastamos um pouco, e confesso que foi difícil.</p>
+                <hr>
+                <p>Mesmo com a distância, e com os medos que cada um carregava, no fundo, nós dois sabíamos que um queria o outro. Era uma certeza silenciosa, algo que transcendia qualquer obstáculo. E foi assim, entre risadas, discussões e a inevitável aproximação, que a admiração pela pessoa incrível que ela é se transformou em amor. Antes mesmo de admitir para mim mesmo, no fundo eu já sabia: ela seria minha mulher.</p>
+                <hr>
+                <p style="font-style: italic; color: #555;">A gratidão que sinto por cada momento ao seu lado transborda em meu peito. Cada riso compartilhado, cada abraço apertado, cada olhar cúmplice são tesouros que guardo com o maior carinho. Construímos juntos um amor que é a luz da minha existência, uma jornada repleta de aprendizado, crescimento e, acima de tudo, um amor que se intensifica a cada novo amanhecer.</p>
+                <hr>
+                <p>Meu amor por você é como uma canção que nunca termina, uma melodia eterna que ecoa em meu coração a cada batida.</p>
+            </div>
+            <button id="rolar-btn">Continuar Lendo</button>
+        </div>
+    </div>
+
+    <script>
+        const fotos = [
+            "fotos/1.jpeg", 
+            "fotos/2.jpg", 
+            "fotos/3.jpg", 
+            "fotos/4.jpg",
+			"fotos/5.jpg", 
+			"fotos/6.jpeg", 
+			"fotos/7.jpeg", 
+			"fotos/8.jpeg", 
+			"fotos/9.jpeg"
+        ];
+        let fotoAtualIndex = 0;
+
+        const btnTeAmo = document.getElementById('btnTeAmo');
+        const paginaInicial = document.getElementById('pagina-inicial');
+        const paginaSecreta = document.getElementById('pagina-secreta');
+        const fotoAtualEl = document.getElementById('foto-atual');
+        const setaEsquerda = document.getElementById('seta-esquerda');
+        const setaDireita = document.getElementById('seta-direita');
+        const rolarBtn = document.getElementById('rolar-btn');
+        const textoRolavel = document.querySelector('.texto-rolavel');
+
+        btnTeAmo.addEventListener('click', function() {
+            paginaInicial.style.display = 'none';
+            paginaSecreta.style.display = 'flex';
+            if (fotos.length > 0 && fotos[0]) {
+                fotoAtualEl.src = fotos[fotoAtualIndex];
+            } else {
+                fotoAtualEl.alt = "Nenhuma foto carregada ou caminho incorreto.";
+                document.getElementById('carrossel').style.display = 'none';
+            }
+        });
+
+        function mostrarFoto() {
+            if (fotos.length > 0 && fotos[fotoAtualIndex]) {
+                fotoAtualEl.src = fotos[fotoAtualIndex];
+                fotoAtualEl.alt = `Foto ${fotoAtualIndex + 1}`;
+            }
+        }
+
+        setaDireita.addEventListener('click', function() {
+            if (fotos.length > 0) {
+                fotoAtualIndex = (fotoAtualIndex + 1) % fotos.length;
+                mostrarFoto();
+            }
+        });
+        setaEsquerda.addEventListener('click', function() {
+             if (fotos.length > 0) {
+                fotoAtualIndex = (fotoAtualIndex - 1 + fotos.length) % fotos.length;
+                mostrarFoto();
+            }
+        });
+
+        // Função para formatar números com dois dígitos (ex: 01, 02, ... 09)
+        function formatTwoDigits(n) {
+            return n < 10 ? '0' + n : n;
+        }
+
+        function atualizarContador() {
+            const dataInicio = new Date('2022-04-28T20:00:00');
+            const hoje = new Date();
+            const diferenca = hoje - dataInicio;
+
+            // Calcula horas, minutos e segundos
+            const segundos = Math.floor(diferenca / 1000) % 60;
+            const minutos = Math.floor(diferenca / (1000 * 60)) % 60;
+            const horas = Math.floor(diferenca / (1000 * 60 * 60)) % 24;
+
+            // Calcula total de dias para anos, meses e dias restantes
+            const diasTotal = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const anos = Math.floor(diasTotal / 365.25);
+            let meses = Math.floor((diasTotal % 365.25) / 30.4375);
+            let diasRestantes = Math.floor((diasTotal % 365.25) % 30.4375);
+
+            if (diasRestantes < 0) {
+                meses--;
+                const diasNoMesAnterior = new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
+                diasRestantes += diasNoMesAnterior;
+            }
+             if (meses < 0) meses = 11; // Ajuste simples
+
+            document.getElementById('tempo-amor').innerHTML = `
+                <span class="ymd-line">
+                    ${anos} <span class="unit-label">ano${anos !== 1 ? 's' : ''}</span>, 
+                    ${meses} <span class="unit-label">mês${meses !== 1 ? 'es' : ''}</span> e 
+                    ${diasRestantes} <span class="unit-label">dia${diasRestantes !== 1 ? 's' : ''}</span>
+                </span>
+                <span class="hms-line">
+                    ${formatTwoDigits(horas)}<span class="hms-colon">:</span>${formatTwoDigits(minutos)}<span class="hms-colon">:</span>${formatTwoDigits(segundos)}
+                </span>
+            `;
+        }
+        atualizarContador(); // Chama uma vez para não esperar 1 segundo para a primeira exibição
+        setInterval(atualizarContador, 1000); // Atualiza a cada segundo
+
+        rolarBtn.addEventListener('click', function() {
+            textoRolavel.scrollBy({ top: 150, behavior: 'smooth' });
+            if (textoRolavel.scrollTop + textoRolavel.clientHeight >= textoRolavel.scrollHeight - 30) {
+                this.style.display = 'none';
+            }
+        });
+
+        textoRolavel.addEventListener('scroll', function() {
+            if (this.scrollTop + this.clientHeight < this.scrollHeight - 30) {
+                if(rolarBtn.style.display === 'none') rolarBtn.style.display = 'block';
+            } else {
+                 rolarBtn.style.display = 'none';
+            }
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'em';
+            heart.style.setProperty('--delay', (Math.random() * 5) + 's');
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        window.onload = function() {
+            setInterval(createHeart, 250);
+            if (fotos.length > 0 && fotos[0]) {
+                fotoAtualEl.src = fotos[0];
+                fotoAtualEl.alt = "Foto 1";
+            } else {
+                fotoAtualEl.alt = "Verifique os caminhos das fotos no array 'fotos'";
+                document.getElementById('carrossel').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
